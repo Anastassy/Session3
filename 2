@@ -1,0 +1,46 @@
+#include <iostream>
+using namespace std;
+
+void qsort(int *arr, int l, int r) {
+    int x = arr[(l+r)/2];
+    int i = l, j = r;
+    while(i <= j) {
+        while (arr[i] < x) i++;
+        while (arr[j] > x) j--;
+        if (i <= j) {
+            swap(arr[i++], arr[j--]);
+        }
+    }
+    if (i < r) {
+        qsort(arr, i, r);
+    }
+    if (l < j) {
+        qsort(arr, l, j);
+    }
+}
+
+int hasMajority (int *arr, int n) {
+    qsort(arr, 0, n-1);
+    int maj = 1;
+    for (int i=1; i<n; i++) {
+        if (arr[i] == arr[i-1]) {
+            maj++;
+        } else {
+            if (maj > n/2) {
+                return arr[i-1];
+            }
+            maj = 1;
+        }
+    }
+    if (maj > n/2) {
+        return arr[n-1];
+    } else {
+        return 0;
+    }
+}
+
+int main(){
+    int arr[] = {3,2,2};
+    cout << hasMajority(arr, 3);
+    return 0;
+}
